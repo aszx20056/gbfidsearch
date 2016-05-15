@@ -1,0 +1,113 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GBF方陣招喚</title>
+    <script src="~/script/jquery-1.11.1.js"></script>
+</head>
+<body>
+    <div id="all"> 
+        <div>
+            <h1>我是巴盒子</h1>
+            <div id="dr"></div>
+        </div>
+        <div><h1>我是風盒子</h1>
+        <div id="green">
+
+        </div>
+            </div>
+        <div>
+            <h1>我是水盒子</h1>
+            <div id="blue">
+
+            </div>
+           </div>
+        <div>
+            <h1>我是土盒子</h1>
+            <div id="brown">
+
+            </div>
+            </div>
+        <div>
+            <h1>我是火盒子</h1>
+            <div id="red"></div>
+            </div>
+        <div>
+            <h1>我是光盒子</h1>
+            <div id="gold"></div>
+            </div>
+        <div>
+            <h1>我是暗盒子</h1>
+            <div id="dark"></div>
+            </div>
+     
+            <script>
+                $("#all").on("click", ".getid", function () {
+                    var copyTextarea = $(this);
+                    copyTextarea.select();
+                    var successful = document.execCommand('copy');
+                    var msg = successful ? 'successful' : 'unsuccessful';
+                    $(this).css('background','#C1FED7');
+                });
+                function getid(text) {
+                    var id = text;
+                    var start = id.indexOf("参加者募集！参戦ID：");
+                    start = start + 11;
+                    id = id.substring(start, start + 8);
+                    return id;
+                }
+                debugger;
+                $.ajax({
+                    url: '@Url.Action("datapage")',
+                    type: 'GET',
+                    dataType: "json",
+                    data: {
+                    },
+                    error: function (xhr) {
+                        alert('資料接收錯誤');
+                    },
+                    success: function (response) {
+                     //   var d = new Date(response.statuses[0].created_at);
+                        for (var i = 0; i < response.statuses.length; i++) {
+                            var text = response.statuses[i].text;
+                            if (text.indexOf("Lv50 ティアマト・マグナ") != -1) { //風
+                                var id = getid(text);
+                                $("#green").append("<textarea class='getid' style='height:30px;'>" + id + "</textarea><br />");
+                            }
+                            else if (text.indexOf("Lv60 リヴァイアサン・マグナ") != -1) {//水
+                                var id = getid(text);
+                                $("#blue").append("<textarea class='getid' style='height:30px;'>" + id + "</textarea><br />");
+                            }
+                            else if (text.indexOf("Lv60 ユグドラシル・マグナ") != -1) {//土
+                                var id = getid(text);
+                                $("#brown").append("<textarea class='getid' style='height:30px;'>" + id + "</textarea><br />");
+                            }
+                            else if (text.indexOf("Lv70 コロッサス・マグナ") != -1) {//火
+                                var id = getid(text);
+                                $("#red").append("<textarea class='getid' style='height:30px;'>" + id + "</textarea><br />");
+                            }
+                            else if (text.indexOf("Lv75 シュヴァリエ・マグナ") != -1) {//光
+                                var id = getid(text);
+                                $("#gold").append("<textarea class='getid' style='height:30px;'>" + id + "</textarea><br />");
+                            }
+                            else if (text.indexOf("Lv75 セレスト・マグナ") != -1) {
+                                var id = getid(text);
+                                $("#dark").append("<textarea class='getid' style='height:30px;'>" + id + "</textarea><br />");
+                            }
+                            else if (text.indexOf("Lv100 プロトバハムート") != -1) {
+                                var id = getid(text);
+                                $("#dr").append("<textarea class='getid' style='height:30px;'>" + id + "</textarea><br />");
+                            }
+                        }
+                    }
+                });
+            </script>
+        </div>
+</body>
+</html>
